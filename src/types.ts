@@ -1,4 +1,10 @@
-export type PieceType = 'king' | 'queen' | 'rook' | 'bishop' | 'knight' | 'pawn';
+export type PieceType =
+  | 'king'
+  | 'queen'
+  | 'rook'
+  | 'bishop'
+  | 'knight'
+  | 'pawn';
 export type Color = 'white' | 'black';
 
 export interface Piece {
