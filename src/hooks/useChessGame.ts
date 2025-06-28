@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Board, Position, Color } from '../types';
+import type { Board, Color, Position } from '../types';
 import { createInitialBoard } from '../utils/initialBoard';
 import { isValidMove } from '../utils/moveValidation';
 
@@ -15,19 +15,19 @@ export const useChessGame = () => {
     if (selectedSquare) {
       // Try to move
       const selectedPiece = board[selectedSquare.row][selectedSquare.col];
-      
+
       if (selectedPiece && selectedPiece.color === currentPlayer) {
         if (isValidMove(board, selectedSquare, position, selectedPiece)) {
           // Make the move
-          const newBoard = board.map(row => [...row]);
+          const newBoard = board.map((row) => [...row]);
           newBoard[row][col] = selectedPiece;
           newBoard[selectedSquare.row][selectedSquare.col] = null;
-          
+
           setBoard(newBoard);
           setCurrentPlayer(currentPlayer === 'white' ? 'black' : 'white');
         }
       }
-      
+
       setSelectedSquare(null);
     } else {
       // Select piece
@@ -48,6 +48,6 @@ export const useChessGame = () => {
     currentPlayer,
     selectedSquare,
     handleSquareClick,
-    resetGame
+    resetGame,
   };
 };
