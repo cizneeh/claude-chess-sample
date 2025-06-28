@@ -51,7 +51,8 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
       {board.map((row, rowIndex) =>
         row.map((piece, colIndex) => (
           <div
-            key={`${rowIndex}-${colIndex}`}
+            // biome-ignore lint/suspicious/noArrayIndexKey: チェス盤の位置は固定で適切
+            key={`square-${rowIndex}-${colIndex}`}
             className={`
               ${getSquareColor(rowIndex, colIndex)}
               flex items-center justify-center
@@ -60,7 +61,15 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
               hover:brightness-110
               aspect-square
             `}
+            role="button"
+            tabIndex={0}
             onClick={() => onSquareClick({ row: rowIndex, col: colIndex })}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onSquareClick({ row: rowIndex, col: colIndex });
+              }
+            }}
           >
             {piece && getPieceSymbol(piece)}
           </div>

@@ -1,4 +1,4 @@
-import { type Board, Piece } from '../types';
+import type { Board } from '../types';
 
 export const createInitialBoard = (): Board => {
   const board: Board = Array(8)

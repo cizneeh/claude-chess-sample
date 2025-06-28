@@ -1,4 +1,4 @@
-import { type Board, type Piece, PieceType, type Position } from '../types';
+import type { Board, Piece, Position } from '../types';
 
 export const isValidMove = (
   board: Board,
@@ -58,7 +58,7 @@ const isValidPawnMove = (
   rowDiff: number,
   colDiff: number,
 ): boolean => {
-  const { row: fromRow, col: fromCol } = from;
+  const { row: fromRow } = from;
   const { row: toRow, col: toCol } = to;
   const direction = piece.color === 'white' ? -1 : 1;
   const startRow = piece.color === 'white' ? 6 : 1;
