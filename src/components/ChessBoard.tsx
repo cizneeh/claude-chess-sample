@@ -57,7 +57,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
               ${getSquareColor(rowIndex, colIndex)}
               flex items-center justify-center
               cursor-pointer
-              text-4xl
+              text-6xl
               hover:brightness-110
               aspect-square
               border border-gray-600
