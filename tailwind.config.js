@@ -9,6 +9,8 @@ export default {
     'bg-stone-600',
     'bg-yellow-300',
     'bg-yellow-500',
+    'bg-green-300',
+    'bg-green-500',
   ],
   plugins: [],
 };
