@@ -1,15 +1,17 @@
-import type React from 'react'
-import type { Board, Piece, Position } from '../types'
+import type React from 'react';
+import type { Board, Piece, Position } from '../types';
 
 interface ChessBoardProps {
-  board: Board
-  selectedSquare: Position | null
-  onSquareClick: (position: Position) => void
+  board: Board;
+  selectedSquare: Position | null;
+  validMoves: Position[];
+  onSquareClick: (position: Position) => void;
 }
 
 const ChessBoard: React.FC<ChessBoardProps> = ({
   board,
   selectedSquare,
+  validMoves,
   onSquareClick,
 }) => {
   const getPieceSymbol = (piece: Piece): string => {
@@ -30,21 +32,31 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
         knight: '♞',
         pawn: '♟',
       },
-    }
-    return symbols[piece.color][piece.type]
-  }
+    };
+    return symbols[piece.color][piece.type];
+  };
 
   const isSelected = (row: number, col: number): boolean => {
-    return selectedSquare?.row === row && selectedSquare?.col === col
-  }
+    return selectedSquare?.row === row && selectedSquare?.col === col;
+  };
+
+  const isValidMove = (row: number, col: number): boolean => {
+    return validMoves.some((move) => move.row === row && move.col === col);
+  };
 
   const getSquareColor = (row: number, col: number): string => {
-    const isLight = (row + col) % 2 === 0
+    const isLight = (row + col) % 2 === 0;
+
     if (isSelected(row, col)) {
-      return isLight ? 'bg-yellow-300' : 'bg-yellow-500'
+      return isLight ? 'bg-yellow-300' : 'bg-yellow-500';
     }
-    return isLight ? 'bg-stone-200' : 'bg-stone-600'
-  }
+
+    if (isValidMove(row, col)) {
+      return isLight ? 'bg-green-300' : 'bg-green-500';
+    }
+
+    return isLight ? 'bg-stone-200' : 'bg-stone-600';
+  };
 
   return (
     <div className="grid grid-cols-8 grid-rows-8 w-[600px] h-[600px] border-4 border-gray-900 shadow-xl">
@@ -68,8 +80,8 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
             onClick={() => onSquareClick({ row: rowIndex, col: colIndex })}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                onSquareClick({ row: rowIndex, col: colIndex })
+                e.preventDefault();
+                onSquareClick({ row: rowIndex, col: colIndex });
               }
             }}
           >
@@ -78,7 +90,7 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
         )),
       )}
     </div>
-  )
-}
+  );
+};
 
-export default ChessBoard
+export default ChessBoard;
