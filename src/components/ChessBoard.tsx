@@ -57,12 +57,12 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
               ${getSquareColor(rowIndex, colIndex)}
               flex items-center justify-center
               cursor-pointer
-              text-6xl
               hover:brightness-110
               aspect-square
               border border-gray-600
               transition-all duration-150
             `}
+            style={{ fontSize: '3.5rem', lineHeight: 1 }}
             role="button"
             tabIndex={0}
             onClick={() => onSquareClick({ row: rowIndex, col: colIndex })}
