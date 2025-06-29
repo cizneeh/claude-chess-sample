@@ -4,9 +4,9 @@ import { createInitialBoard } from '../utils/initialBoard';
 import { isValidMove } from '../utils/moveValidation';
 import { getValidMoves } from '../utils/validMoves';
 
-export const useChessGame = () => {
+export const useShogiGame = () => {
   const [board, setBoard] = useState<Board>(createInitialBoard());
-  const [currentPlayer, setCurrentPlayer] = useState<Color>('white');
+  const [currentPlayer, setCurrentPlayer] = useState<Color>('sente');
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
   const [validMoves, setValidMoves] = useState<Position[]>([]);
 
@@ -26,7 +26,7 @@ export const useChessGame = () => {
           newBoard[selectedSquare.row][selectedSquare.col] = null;
 
           setBoard(newBoard);
-          setCurrentPlayer(currentPlayer === 'white' ? 'black' : 'white');
+          setCurrentPlayer(currentPlayer === 'sente' ? 'gote' : 'sente');
         }
       }
 
@@ -43,7 +43,7 @@ export const useChessGame = () => {
 
   const resetGame = () => {
     setBoard(createInitialBoard());
-    setCurrentPlayer('white');
+    setCurrentPlayer('sente');
     setSelectedSquare(null);
     setValidMoves([]);
   };

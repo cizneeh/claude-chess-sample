@@ -13,7 +13,7 @@ export const isValidMove = (
   if (fromRow === toRow && fromCol === toCol) return false;
 
   // Can't move outside board
-  if (toRow < 0 || toRow > 7 || toCol < 0 || toCol > 7) return false;
+  if (toRow < 0 || toRow > 8 || toCol < 0 || toCol > 8) return false;
 
   // Can't capture own piece
   const targetPiece = board[toRow][toCol];
@@ -26,57 +26,34 @@ export const isValidMove = (
 
   switch (piece.type) {
     case 'pawn':
-      return isValidPawnMove(board, from, to, piece, rowDiff, colDiff);
+      return isValidPawnMove(piece, rowDiff, colDiff);
     case 'rook':
       return isValidRookMove(board, from, to, rowDiff, colDiff);
     case 'bishop':
       return isValidBishopMove(board, from, to, absRowDiff, absColDiff);
-    case 'queen':
-      return isValidQueenMove(
-        board,
-        from,
-        to,
-        rowDiff,
-        colDiff,
-        absRowDiff,
-        absColDiff,
-      );
+    case 'gold':
+      return isValidGoldMove(absRowDiff, absColDiff, rowDiff, piece.color);
+    case 'silver':
+      return isValidSilverMove(absRowDiff, absColDiff, rowDiff, piece.color);
     case 'king':
       return isValidKingMove(absRowDiff, absColDiff);
     case 'knight':
-      return isValidKnightMove(absRowDiff, absColDiff);
+      return isValidKnightMove(rowDiff, colDiff, piece.color);
+    case 'lance':
+      return isValidLanceMove(board, from, to, rowDiff, colDiff, piece.color);
     default:
       return false;
   }
 };
 
+// 歩兵の移動
 const isValidPawnMove = (
-  board: Board,
-  from: Position,
-  to: Position,
   piece: Piece,
   rowDiff: number,
   colDiff: number,
 ): boolean => {
-  const { row: fromRow } = from;
-  const { row: toRow, col: toCol } = to;
-  const direction = piece.color === 'white' ? -1 : 1;
-  const startRow = piece.color === 'white' ? 6 : 1;
-
-  // Forward move
-  if (colDiff === 0) {
-    if (board[toRow][toCol]) return false; // Can't move forward to occupied square
-
-    if (rowDiff === direction) return true; // One square forward
-    if (fromRow === startRow && rowDiff === 2 * direction) return true; // Two squares from start
-  }
-
-  // Diagonal capture
-  if (Math.abs(colDiff) === 1 && rowDiff === direction) {
-    return board[toRow][toCol] !== null; // Must capture a piece
-  }
-
-  return false;
+  const direction = piece.color === 'sente' ? -1 : 1;
+  return rowDiff === direction && colDiff === 0;
 };
 
 const isValidRookMove = (
@@ -103,33 +80,73 @@ const isValidBishopMove = (
   return isPathClear(board, from, to);
 };
 
-const isValidQueenMove = (
+// 金将の移動
+const isValidGoldMove = (
+  absRowDiff: number,
+  absColDiff: number,
+  rowDiff: number,
+  color: string,
+): boolean => {
+  const direction = color === 'sente' ? -1 : 1;
+
+  // 前、後、左、右、前斜め
+  if (absRowDiff <= 1 && absColDiff <= 1) {
+    // 後ろ斜めは不可
+    if (rowDiff === -direction && absColDiff === 1) return false;
+    return true;
+  }
+  return false;
+};
+
+// 銀将の移動
+const isValidSilverMove = (
+  absRowDiff: number,
+  absColDiff: number,
+  rowDiff: number,
+  color: string,
+): boolean => {
+  const direction = color === 'sente' ? -1 : 1;
+
+  // 前、前斜め、後ろ斜め
+  if (absRowDiff <= 1 && absColDiff <= 1) {
+    // 横と真後ろは不可
+    if (rowDiff === 0 || (rowDiff === -direction && absColDiff === 0))
+      return false;
+    return true;
+  }
+  return false;
+};
+
+// 王将・玉将の移動
+const isValidKingMove = (absRowDiff: number, absColDiff: number): boolean => {
+  return absRowDiff <= 1 && absColDiff <= 1;
+};
+
+// 桂馬の移動
+const isValidKnightMove = (
+  rowDiff: number,
+  colDiff: number,
+  color: string,
+): boolean => {
+  const direction = color === 'sente' ? -1 : 1;
+  return rowDiff === 2 * direction && Math.abs(colDiff) === 1;
+};
+
+// 香車の移動
+const isValidLanceMove = (
   board: Board,
   from: Position,
   to: Position,
   rowDiff: number,
   colDiff: number,
-  absRowDiff: number,
-  absColDiff: number,
+  color: string,
 ): boolean => {
-  // Queen combines rook and bishop moves
-  const isRookMove = rowDiff === 0 || colDiff === 0;
-  const isBishopMove = absRowDiff === absColDiff;
+  const direction = color === 'sente' ? -1 : 1;
 
-  if (!isRookMove && !isBishopMove) return false;
+  // 前方向のみ
+  if (colDiff !== 0 || rowDiff * direction <= 0) return false;
 
   return isPathClear(board, from, to);
-};
-
-const isValidKingMove = (absRowDiff: number, absColDiff: number): boolean => {
-  return absRowDiff <= 1 && absColDiff <= 1;
-};
-
-const isValidKnightMove = (absRowDiff: number, absColDiff: number): boolean => {
-  return (
-    (absRowDiff === 2 && absColDiff === 1) ||
-    (absRowDiff === 1 && absColDiff === 2)
-  );
 };
 
 const isPathClear = (board: Board, from: Position, to: Position): boolean => {

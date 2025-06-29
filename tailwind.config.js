@@ -4,13 +4,6 @@ export default {
   theme: {
     extend: {},
   },
-  safelist: [
-    'bg-stone-200',
-    'bg-stone-600',
-    'bg-yellow-300',
-    'bg-yellow-500',
-    'bg-green-300',
-    'bg-green-500',
-  ],
+  safelist: ['bg-amber-50', 'bg-yellow-300', 'bg-green-300'],
   plugins: [],
 };

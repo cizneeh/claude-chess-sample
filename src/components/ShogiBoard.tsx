@@ -1,14 +1,14 @@
 import type React from 'react';
 import type { Board, Piece, Position } from '../types';
 
-interface ChessBoardProps {
+interface ShogiboardProps {
   board: Board;
   selectedSquare: Position | null;
   validMoves: Position[];
   onSquareClick: (position: Position) => void;
 }
 
-const ChessBoard: React.FC<ChessBoardProps> = ({
+const ShogiBoard: React.FC<ShogiboardProps> = ({
   board,
   selectedSquare,
   validMoves,
@@ -16,21 +16,25 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
 }) => {
   const getPieceSymbol = (piece: Piece): string => {
     const symbols = {
-      white: {
-        king: '♔',
-        queen: '♕',
-        rook: '♖',
-        bishop: '♗',
-        knight: '♘',
-        pawn: '♙',
+      sente: {
+        king: '王',
+        rook: '飛',
+        bishop: '角',
+        gold: '金',
+        silver: '銀',
+        knight: '桂',
+        lance: '香',
+        pawn: '歩',
       },
-      black: {
-        king: '♚',
-        queen: '♛',
-        rook: '♜',
-        bishop: '♝',
-        knight: '♞',
-        pawn: '♟',
+      gote: {
+        king: '玉',
+        rook: '飛',
+        bishop: '角',
+        gold: '金',
+        silver: '銀',
+        knight: '桂',
+        lance: '香',
+        pawn: '歩',
       },
     };
     return symbols[piece.color][piece.type];
@@ -45,34 +49,32 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   };
 
   const getSquareColor = (row: number, col: number): string => {
-    const isLight = (row + col) % 2 === 0;
-
     if (isSelected(row, col)) {
-      return isLight ? 'bg-yellow-300' : 'bg-yellow-500';
+      return 'bg-yellow-300';
     }
 
     if (isValidMove(row, col)) {
-      return isLight ? 'bg-green-300' : 'bg-green-500';
+      return 'bg-green-300';
     }
 
-    return isLight ? 'bg-stone-200' : 'bg-stone-600';
+    return 'bg-amber-50'; // 将棋盤の色
   };
 
   return (
-    <div className="grid grid-cols-8 grid-rows-8 w-[600px] h-[600px] border-4 border-gray-900 shadow-xl">
+    <div className="grid grid-cols-9 grid-rows-9 w-[600px] h-[600px] border-4 border-gray-900 shadow-xl">
       {board.map((row, rowIndex) =>
         row.map((piece, colIndex) => (
           <div
-            // biome-ignore lint/suspicious/noArrayIndexKey: チェス盤の位置は固定で適切
+            // biome-ignore lint/suspicious/noArrayIndexKey: 将棋盤の位置は固定で適切
             key={`square-${rowIndex}-${colIndex}`}
             className={`
               ${getSquareColor(rowIndex, colIndex)}
               flex items-center justify-center
               cursor-pointer
-              text-6xl
+              text-3xl font-bold
               hover:brightness-110
               aspect-square
-              border border-gray-600
+              border border-gray-400
               transition-all duration-150
             `}
             role="button"
@@ -93,4 +95,4 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   );
 };
 
-export default ChessBoard;
+export default ShogiBoard;

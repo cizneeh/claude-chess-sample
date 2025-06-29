@@ -1,5 +1,5 @@
-import ChessBoard from './components/ChessBoard';
-import { useChessGame } from './hooks/useChessGame';
+import ShogiBoard from './components/ShogiBoard';
+import { useShogiGame } from './hooks/useShogiGame';
 
 function App() {
   const {
@@ -9,18 +9,20 @@ function App() {
     validMoves,
     handleSquareClick,
     resetGame,
-  } = useChessGame();
+  } = useShogiGame();
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-      <h1 className="text-4xl font-bold mb-6 text-gray-800">Chess Game</h1>
+      <h1 className="text-4xl font-bold mb-6 text-gray-800">将棋ゲーム</h1>
 
       <div className="mb-4 text-xl">
-        Current Player:{' '}
-        <span className="font-semibold capitalize">{currentPlayer}</span>
+        手番:{' '}
+        <span className="font-semibold">
+          {currentPlayer === 'sente' ? '先手' : '後手'}
+        </span>
       </div>
 
-      <ChessBoard
+      <ShogiBoard
         board={board}
         selectedSquare={selectedSquare}
         validMoves={validMoves}
@@ -32,7 +34,7 @@ function App() {
         onClick={resetGame}
         className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
       >
-        Reset Game
+        対局リセット
       </button>
     </div>
   );
