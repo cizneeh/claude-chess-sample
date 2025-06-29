@@ -2,11 +2,13 @@ import { useState } from 'react';
 import type { Board, Color, Position } from '../types';
 import { createInitialBoard } from '../utils/initialBoard';
 import { isValidMove } from '../utils/moveValidation';
+import { getValidMoves } from '../utils/validMoves';
 
 export const useChessGame = () => {
   const [board, setBoard] = useState<Board>(createInitialBoard());
   const [currentPlayer, setCurrentPlayer] = useState<Color>('white');
   const [selectedSquare, setSelectedSquare] = useState<Position | null>(null);
+  const [validMoves, setValidMoves] = useState<Position[]>([]);
 
   const handleSquareClick = (position: Position) => {
     const { row, col } = position;
@@ -29,10 +31,12 @@ export const useChessGame = () => {
       }
 
       setSelectedSquare(null);
+      setValidMoves([]);
     } else {
       // Select piece
       if (piece && piece.color === currentPlayer) {
         setSelectedSquare(position);
+        setValidMoves(getValidMoves(board, position));
       }
     }
   };
@@ -41,12 +45,14 @@ export const useChessGame = () => {
     setBoard(createInitialBoard());
     setCurrentPlayer('white');
     setSelectedSquare(null);
+    setValidMoves([]);
   };
 
   return {
     board,
     currentPlayer,
     selectedSquare,
+    validMoves,
     handleSquareClick,
     resetGame,
   };

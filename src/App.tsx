@@ -2,8 +2,14 @@ import ChessBoard from './components/ChessBoard';
 import { useChessGame } from './hooks/useChessGame';
 
 function App() {
-  const { board, currentPlayer, selectedSquare, handleSquareClick, resetGame } =
-    useChessGame();
+  const {
+    board,
+    currentPlayer,
+    selectedSquare,
+    validMoves,
+    handleSquareClick,
+    resetGame,
+  } = useChessGame();
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
@@ -17,6 +23,7 @@ function App() {
       <ChessBoard
         board={board}
         selectedSquare={selectedSquare}
+        validMoves={validMoves}
         onSquareClick={handleSquareClick}
       />
 
