@@ -1,6 +1,5 @@
 import ChessBoard from './components/ChessBoard';
 import { useChessGame } from './hooks/useChessGame';
-import './App.css';
 
 function App() {
   const { board, currentPlayer, selectedSquare, handleSquareClick, resetGame } =

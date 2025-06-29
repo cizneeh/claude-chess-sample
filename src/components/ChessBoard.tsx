@@ -41,9 +41,9 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
   const getSquareColor = (row: number, col: number): string => {
     const isLight = (row + col) % 2 === 0
     if (isSelected(row, col)) {
-      return isLight ? 'bg-yellow-300' : 'bg-yellow-600'
+      return isLight ? 'bg-yellow-300' : 'bg-yellow-500'
     }
-    return isLight ? 'bg-amber-100' : 'bg-amber-800'
+    return isLight ? 'bg-stone-200' : 'bg-stone-600'
   }
 
   return (
@@ -57,12 +57,12 @@ const ChessBoard: React.FC<ChessBoardProps> = ({
               ${getSquareColor(rowIndex, colIndex)}
               flex items-center justify-center
               cursor-pointer
+              text-4xl
               hover:brightness-110
               aspect-square
               border border-gray-600
               transition-all duration-150
             `}
-            style={{ fontSize: '3.5rem', lineHeight: 1 }}
             role="button"
             tabIndex={0}
             onClick={() => onSquareClick({ row: rowIndex, col: colIndex })}
